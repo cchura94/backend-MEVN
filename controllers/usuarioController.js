@@ -1,75 +1,95 @@
-const usuario = require("../models/usuario")
+var bcrypt = require("bcrypt");
+
+const usuario = require("../models/usuario");
 
 // Listar
-function listar(req, res) {
-    usuario.find().then((datos) => {
-        console.log(datos)
-        res.json(datos);
-    });
+async function listar(req, res) {
+  const datos = await usuario.find();
+  res.json(datos);
 }
 // Guardar
-function guardar(req, res) {
-    var c = req.body.email;
+async function guardar(req, res) {
+  var c = req.body.email;
 
-    usuario.find({
-        email: c
-    }).then((user) => {
-        if (user.length > 0) {
-            return res.json({
-                mensaje: "El correo ya está registrado"
-            })
-        } else {
-            var us = new usuario(req.body);
-            us.save().then(() => {
-                return res.json({
-                    mensaje: "usuario registrado"
-                })
-            });
+  const user = await usuario.find({
+    email: c,
+  });
 
-        }
-    })
+  if (user.length > 0) {
+    res.json({
+      mensaje: "El correo ya está registrado",
+    });
+  } else {
+    var objUsuario = {};
+    var BCRYPT_SALT_ROUNDS = 12;
+    const pass = await bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS);
+
+    /*objUsuario = {
+      usuario: req.body.usuario,
+      email: req.body.email,
+      password: pass,
+    };*/
+    req.body.password = pass;
+    var us = new usuario(req.body);
+    await us.save();
+
+    res.json({
+      mensaje: "usuario registrado",
+    });
+  }
 }
 // Mostrar por _id
-function mostrar(req, res) {
-    var id = req.params.id
-    usuario.findById(id).then(user => {
-        if (user) {
-            return res.json(user);
-        } else {
-            return res.json({
-                mensaje: "usuario no encontrado"
-            })
-        }
-    }).catch(err => {
-        console.log(err);
-        return res.send("404")
-    });
-    /*return res.json({
-        mensaje: "usuario no existe"
-    })*/
+async function mostrar(req, res) {
+  try {
+    var id = req.params.id;
 
+    const user = await usuario.findById(id);
+
+    if (user) {
+      res.json(user);
+    } else {
+      res.json({
+        mensaje: "usuario no encontrado",
+      });
+    }
+  } catch (error) {
+    res.json({
+      status: 404,
+      mensaje: "No funciona",
+    });
+  }
 }
 // Modificar por _id
-function modificar(req, res) {
-    var id = req.params.id
-    usuario.update({
-        _id: id
-    }, req.body).then(() => {
-        return res.json({
-            mensaje: "usuario modificamos"
-        })
-    })
+async function modificar(req, res) {
+  var id = req.params.id;
+  await usuario.update(
+    {
+      _id: id,
+    },
+    req.body
+  );
+
+  res.json({
+    mensaje: "usuario modificado",
+  });
 }
 // Eliminar por _id
-function eliminar(req, res) {
+async function eliminar(req, res) {
+  var id = req.params.id;
+  await usuario.remove({
+    _id: id,
+  });
 
+  res.json({
+    mensaje: "usuario eliminado",
+  });
 }
 // Exportar las funciones
 
 module.exports = {
-    listar,
-    guardar,
-    modificar,
-    mostrar,
-    eliminar
-}
+  listar,
+  guardar,
+  modificar,
+  mostrar,
+  eliminar,
+};
