@@ -20,22 +20,26 @@ async function guardar(req, res) {
       mensaje: "El correo ya está registrado",
     });
   } else {
-    var objUsuario = {};
-    var BCRYPT_SALT_ROUNDS = 12;
-    const pass = await bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS);
+    try {
+      var objUsuario = {};
+      var BCRYPT_SALT_ROUNDS = 12;
+      const pass = await bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS);
 
-    /*objUsuario = {
-      usuario: req.body.usuario,
-      email: req.body.email,
-      password: pass,
-    };*/
-    req.body.password = pass;
-    var us = new usuario(req.body);
-    await us.save();
+      /*objUsuario = {
+        usuario: req.body.usuario,
+        email: req.body.email,
+        password: pass,
+      };*/
+      req.body.password = pass;
+      var us = new usuario(req.body);
+      await us.save();
 
-    res.json({
-      mensaje: "usuario registrado",
-    });
+      res.json({
+        mensaje: "usuario registrado",
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 // Mostrar por _id

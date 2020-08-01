@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt")
-const usuario = require("../models/usuario")
+var jwt = require('jsonwebtoken');
+const usuario = require("../models/usuario");
+const config = require("../config/config");
 
 async function ingresar(req, res) {
     const user = await usuario.findOne({
@@ -12,8 +14,24 @@ async function ingresar(req, res) {
     } else {
         const valor = await bcrypt.compare(req.body.password, user.password);
         if (valor) {
+
+            const payload = {
+                username: user.usuario,
+                id: user._id,
+                time: new Date()
+            }
+            var token = jwt.sign(payload, config.JWT_SECRET, {
+                expiresIn: config.JWT_TIEMPO
+            });
+
             res.json({
-                mensaje: "Bienvenido usuario"
+                access_token: token,
+                usuario: {
+                    id: user._id,
+                    usuario: user.usuario,
+                    email: user.email,
+                    fecha: new Date()
+                }
             })
         } else {
             res.json({
