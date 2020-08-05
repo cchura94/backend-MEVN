@@ -1,7 +1,10 @@
 const Usuario = require("./../models/usuario");
 const usuarioController = require("../controllers/usuarioController");
+const clienteController = require("../controllers/clienteController");
+
 const authController = require("../controllers/authController");
 const authMiddleware = require("../middlewares/auth");
+
 
 module.exports.add = (app) => {
   app.get("/", (req, res) => {
@@ -12,6 +15,7 @@ module.exports.add = (app) => {
     res.send("Esta es una prueba");
   });
 
+  // Rutas de Usuarios
   app.get("/usuario", authMiddleware.verificaAuth, usuarioController.listar); // Listar
   app.post("/usuario", authMiddleware.verificaAuth, usuarioController.guardar); //Guardar
   app.get("/usuario/:id", authMiddleware.verificaAuth, usuarioController.mostrar); //Mostrar
@@ -20,4 +24,11 @@ module.exports.add = (app) => {
 
   // Inicio de Sesion
   app.post("/ingresar", authController.ingresar); //Inicio de sesion
+
+  // Rutas de Cliente.
+  app.get("/cliente", authMiddleware.verificaAuth, clienteController.listar);
+  app.post("/cliente", authMiddleware.verificaAuth, clienteController.guardar);
+  app.get("/cliente/:id", authMiddleware.verificaAuth, clienteController.mostrar);
+  app.put("/cliente/:id", authMiddleware.verificaAuth, clienteController.modificar);
+  app.delete("/cliente/:id", authMiddleware.verificaAuth, clienteController.eliminar);
 };
