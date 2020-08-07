@@ -1,7 +1,10 @@
 // Importar modulos
-const express = require("express");
-const mongoose = require("mongoose");
-const morgan = require("morgan");
+import express from "express";
+//const express = require("express");`
+import mongoose from "mongoose";
+//const mongoose = require("mongoose");
+import morgan from "morgan"
+//const morgan = require("morgan");
 
 const config = require("./config/config");
 

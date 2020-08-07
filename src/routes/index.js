@@ -2,6 +2,7 @@ const Usuario = require("./../models/usuario");
 const usuarioController = require("../controllers/usuarioController");
 const clienteController = require("../controllers/clienteController");
 const productoController = require("../controllers/productoController");
+const pedidoController = require("../controllers/pedidoController");
 
 const authController = require("../controllers/authController");
 const authMiddleware = require("../middlewares/auth");
@@ -9,7 +10,7 @@ const authMiddleware = require("../middlewares/auth");
 
 module.exports.add = (app) => {
   app.get("/", (req, res) => {
-    res.send("Hola Mundo");
+    res.send("Hola Mundo con babel cambiado prueba");
   });
 
   app.get("/test", (req, res) => {
@@ -39,4 +40,9 @@ module.exports.add = (app) => {
   app.get("/producto/:id", authMiddleware.verificaAuth, productoController.mostrar);
   app.put("/producto/:id", authMiddleware.verificaAuth, productoController.modificar);
   app.delete("/producto/:id", authMiddleware.verificaAuth, productoController.eliminar);
+
+  // Rutas de Pedidos
+  app.post("/pedido", authMiddleware.verificaAuth, pedidoController.guardar);
+  app.get("/pedido/", authMiddleware.verificaAuth, pedidoController.listar);
+
 };
