@@ -44,5 +44,8 @@ module.exports.add = (app) => {
   // Rutas de Pedidos
   app.post("/pedido", authMiddleware.verificaAuth, pedidoController.guardar);
   app.get("/pedido/", authMiddleware.verificaAuth, pedidoController.listar);
+  app.get("/pedido/:id", authMiddleware.verificaAuth, pedidoController.mostrar);
+  app.put("/pedido/:id", authMiddleware.verificaAuth, pedidoController.editar);
+  app.delete("/pedido/:id", authMiddleware.verificaAuth, pedidoController.eliminar);
 
 };

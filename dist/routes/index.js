@@ -16,7 +16,7 @@ const authMiddleware = require("../middlewares/auth");
 
 module.exports.add = app => {
   app.get("/", (req, res) => {
-    res.send("Hola Mundo con babel");
+    res.send("Hola Mundo con babel cambiado prueba");
   });
   app.get("/test", (req, res) => {
     res.send("Esta es una prueba");
@@ -50,4 +50,7 @@ module.exports.add = app => {
 
   app.post("/pedido", authMiddleware.verificaAuth, pedidoController.guardar);
   app.get("/pedido/", authMiddleware.verificaAuth, pedidoController.listar);
+  app.get("/pedido/:id", authMiddleware.verificaAuth, pedidoController.mostrar);
+  app.put("/pedido/:id", authMiddleware.verificaAuth, pedidoController.editar);
+  app.delete("/pedido/:id", authMiddleware.verificaAuth, pedidoController.eliminar);
 };
