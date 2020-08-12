@@ -9,7 +9,8 @@ async function ingresar(req, res) {
     });
     if (!user) {
         res.json({
-            mensaje: "Usuario Incorrecto"
+            mensaje: "Usuario Incorrecto",
+            error: true
         })
     } else {
         const valor = await bcrypt.compare(req.body.password, user.password);
@@ -31,11 +32,13 @@ async function ingresar(req, res) {
                     usuario: user.usuario,
                     email: user.email,
                     fecha: new Date()
-                }
+                },
+                error: false
             })
         } else {
             res.json({
-                mensaje: "Contraseña Incorrecta"
+                mensaje: "Contraseña Incorrecta",
+                error: true
             })
         }
     }

@@ -2,8 +2,11 @@ var jwt = require("jsonwebtoken");
 var config = require("./../config/config");
 
 const verificaAuth = (req, res, next) => {
-    var token = req.headers['token'];
-    console.log(token)
+    //var token = req.headers['token'];
+    var token = null;
+    if (req.headers.authorization)
+        token = req.headers.authorization.split(' ')[1];
+    //console.log(token)
     if (!token) {
         return res.status(403).send({
             auth: false,

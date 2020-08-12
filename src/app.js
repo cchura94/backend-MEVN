@@ -35,6 +35,16 @@ app.use(express.urlencoded({
     extended: true
 })); // for parsing application/x-www-form-urlencoded
 
+// CORS Agregar encabezados (headers)
+app.use(function (req, res, next) {
+    //Sitio web al que se desea permitir que se conecte
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // habilitar los encabezados que desea permitir
+    res.setHeader('Access-Control-Allow-Headers', 'content-type, X-Requested-With, Authorization');
+
+    next();
+});
 
 // Rutas
 router.add(app);
