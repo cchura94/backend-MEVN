@@ -43,6 +43,9 @@ app.use(function (req, res, next) {
     // habilitar los encabezados que desea permitir
     res.setHeader('Access-Control-Allow-Headers', 'content-type, X-Requested-With, Authorization');
 
+    // habilitar los Metodos que desea permitir
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT');
+
     next();
 });
 
