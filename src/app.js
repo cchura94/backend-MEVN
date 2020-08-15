@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import morgan from "morgan"
 //const morgan = require("morgan");
 
+
 const config = require("./config/config");
 
 // Importar rutas

@@ -7,6 +7,21 @@ const pedidoController = require("../controllers/pedidoController");
 const authController = require("../controllers/authController");
 const authMiddleware = require("../middlewares/auth");
 
+import multer from 'multer';
+
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/imagenes");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname)
+  }
+})
+
+const upload = multer({
+  storage
+}).single('imagen');
+
 
 module.exports.add = (app) => {
   app.get("/", (req, res) => {
@@ -36,7 +51,7 @@ module.exports.add = (app) => {
 
   // Rutas de Productos.
   app.get("/producto", authMiddleware.verificaAuth, productoController.listar);
-  app.post("/producto", authMiddleware.verificaAuth, productoController.guardar);
+  app.post("/producto", authMiddleware.verificaAuth, upload, productoController.guardar);
   app.get("/producto/:id", authMiddleware.verificaAuth, productoController.mostrar);
   app.put("/producto/:id", authMiddleware.verificaAuth, productoController.modificar);
   app.delete("/producto/:id", authMiddleware.verificaAuth, productoController.eliminar);
