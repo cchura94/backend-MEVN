@@ -25,7 +25,7 @@ const upload = multer({
 
 module.exports.add = (app) => {
   app.get("/", (req, res) => {
-    res.send("Hola Mundo con babel cambiado prueba");
+    res.render("index.html");
   });
 
   app.get("/test", (req, res) => {

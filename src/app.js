@@ -28,6 +28,9 @@ mongoose
 // Configuración
 var app = express();
 app.set("port", process.env.PORT || config.PORT);
+
+//Habilitar carga de archivos estaticos
+app.use(express.static('public'))
 // Middlewares
 app.use(morgan("dev"));
 //Habilitar Peticiones en formato json

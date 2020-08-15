@@ -6,10 +6,13 @@ async function listar(req, res, next) {
 }
 
 async function guardar(req, res, next) {
-    console.log(req.file);
+
     var prod = new producto(req.body);
     try {
-        prod.imagen = req.file.filename
+
+        if (req.file) {
+            prod.imagen = req.file.filename
+        }
         await prod.save();
 
         res.json({
