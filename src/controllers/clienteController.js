@@ -19,7 +19,7 @@ async function mostrar(req, res, next) {
         let id = req.params.id;
         const clie = await cliente.findById(id);
         if (clie) {
-            res.json(user);
+            res.json(clie);
         } else {
             res.json({
                 mensaje: "cliente no encontrado"
